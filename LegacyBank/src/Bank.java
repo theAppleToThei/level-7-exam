@@ -4,61 +4,59 @@ import java.util.List;
 import java.util.Locale;
 
 public class Bank {
-    
-    void updateBalances(List accounts){
-   	 for (Object object : accounts) {
-   		 double xtra = calculateInterest((BankAccount) object);
-   		 BankAccount acc = (BankAccount) object;
-   		 acc.money = acc.money + xtra;
-   	 }
-   	 
-    }
-    
-    double calculateInterest(BankAccount account) {
 
-   	 Date dateOpened = account.date;
-   	 double amount = account.getBalance();
-   	 
-   	 double perc = 2.54/100;
-   	 
-   	 
-   	 Calendar a = Calendar.getInstance(Locale.US);
-    	a.setTime(new Date());
-    	Calendar b = Calendar.getInstance(Locale.US);
-    	b.setTime(dateOpened);
-    	int diff = b.get(Calendar.YEAR) - a.get(Calendar.YEAR);
-    	if (a.get(Calendar.MONTH) > b.get(Calendar.MONTH) ||
-        	(a.get(Calendar.MONTH) == b.get(Calendar.MONTH) && a.get(Calendar.DATE) > b.get(Calendar.DATE))) {
-        	diff--;
-    	}
-   	 
-   	if(diff<0) diff=-diff;
-       
-     //return  2.54 * amount;
-   	 return diff * perc * amount;
-    }
+	void updateBalances(List accounts) {
+		for (Object object : accounts) {
+			double xtra = calculateInterest((BankAccount) object);
+			BankAccount acc = (BankAccount) object;
+			acc.money = acc.money + xtra;
+		}
 
+	}
+
+	double calculateInterest(BankAccount account) {
+
+		Date dateOpened = account.date;
+		double amount = account.getBalance();
+
+		final double perc = 2.54 / 100;
+
+		Calendar today = Calendar.getInstance(Locale.US);
+		today.setTime(new Date());
+		Calendar calOpened = Calendar.getInstance(Locale.US);
+		calOpened.setTime(dateOpened);
+		int currentMonth = today.get(Calendar.MONTH);
+		int monthOpened = calOpened.get(Calendar.MONTH);
+		int yearOpened = calOpened.get(Calendar.YEAR);
+		int currentYear = today.get(Calendar.YEAR);
+		int currentDate = today.get(Calendar.DATE);
+		int diff = yearOpened - currentYear;
+		
+		if (currentMonth > monthOpened
+				|| (currentMonth == monthOpened && currentDate > calOpened.get(Calendar.DATE))) {
+			diff--;
+		}
+
+		if (diff < 0)
+			diff *= -1;
+
+		return diff * perc * amount;
+	}
 
 }
-
-
 
 class BankAccount {
 
-    Date date;
-    double money;
+	Date date;
+	double money;
 
-    BankAccount(Date date, double money) {
-   	 this.date = date;
-   	 this.money = money;
-    }
-    
+	BankAccount(Date date, double money) {
+		this.date = date;
+		this.money = money;
+	}
 
-    public double getBalance() {
-   	 // TODO Auto-generated method stub
-   	 return money;
-    }
+	public double getBalance() {
+		return money;
+	}
 
 }
-
-

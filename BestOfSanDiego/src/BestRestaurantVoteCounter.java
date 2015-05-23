@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BestRestaurantVoteCounter {
+	String winningRestaurant;
+	
 	public static void main(String[] args) throws IOException {
 		new BestRestaurantVoteCounter().getGoing();
 	}
 
-	private void getGoing() throws IOException {
+	public void getGoing() throws IOException {
 		URL fileWithVotes = getClass().getResource("sample-votes.txt");
 
 		ArrayList<String> votes = new ArrayList();
@@ -33,7 +35,7 @@ public class BestRestaurantVoteCounter {
 				votesForCLevel++;
 		}
 
-		String winningRestaurant = calculateWinner(votesForSangDeuan, votesForOceanaCoastalKitchen, votesForWerewolf, votesForHomeAndAway, votesForCLevel);
+		winningRestaurant = calculateWinner(votesForSangDeuan, votesForOceanaCoastalKitchen, votesForWerewolf, votesForHomeAndAway, votesForCLevel);
 		System.out.println("Reader's favorite restaurant is: "  + winningRestaurant);
 		//TODO: Tweet the result.
 	}
@@ -93,7 +95,8 @@ public class BestRestaurantVoteCounter {
 	}
 
 	boolean matchesCLevel(String possibleMatch) {
-		if (possibleMatch.equalsIgnoreCase("C Level") || possibleMatch.equalsIgnoreCase("c-level") || possibleMatch.equalsIgnoreCase("c level lounge"))
+		if (possibleMatch.substring(0, 7).equalsIgnoreCase("C Level") || possibleMatch.substring(0, 7).equalsIgnoreCase("c-level") || possibleMatch.substring(0, 7).equalsIgnoreCase("c level lounge"))
+//		if (possibleMatch.equalsIgnoreCase("C Level") || possibleMatch.equalsIgnoreCase("c-level") || possibleMatch.equalsIgnoreCase("c level lounge"))
 			return true;
 		else
 			return false;
